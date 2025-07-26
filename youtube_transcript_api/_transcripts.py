@@ -7,7 +7,7 @@ from typing import List, Dict, Iterator, Iterable, Pattern, Optional
 
 from defusedxml import ElementTree
 
-import re
+import re, os
 
 from requests import HTTPError, Session, Response
 
@@ -440,6 +440,11 @@ class TranscriptListFetcher:
 
     def _fetch_html(self, video_id: str) -> str:
         response = self._http_client.get(WATCH_URL.format(video_id=video_id))
+
+        if 'PATH_SAVE_TRANSCRIPT_RESPONSE' in os.environ and os.environ['PATH_SAVE_TRANSCRIPT_RESPONSE']:
+            with open(os.path.join(os.environ['PATH_SAVE_TRANSCRIPT_RESPONSE'],video_id+".html"), "w", encoding="utf-8") as f:
+                f.write(response.text)
+
         return unescape(_raise_http_errors(response, video_id).text)
 
     def _fetch_innertube_data(self, video_id: str, api_key: str) -> Dict:
