@@ -14,6 +14,7 @@ class YouTubeTranscriptApi:
         self,
         proxy_config: Optional[ProxyConfig] = None,
         http_client: Optional[Session] = None,
+        path_file_save_list_fetcher_response: Optional[str] = None,
     ):
         """
         Note on thread-safety: As this class will initialize a `requests.Session`
@@ -46,7 +47,7 @@ class YouTubeTranscriptApi:
                 )
                 http_client.mount("http://", HTTPAdapter(max_retries=retry_config))
                 http_client.mount("https://", HTTPAdapter(max_retries=retry_config))
-        self._fetcher = TranscriptListFetcher(http_client, proxy_config=proxy_config)
+        self._fetcher = TranscriptListFetcher(http_client, proxy_config=proxy_config, path_file_save_list_fetcher_response=path_file_save_list_fetcher_response)
 
     def fetch(
         self,

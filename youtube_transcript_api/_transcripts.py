@@ -345,9 +345,10 @@ class TranscriptList:
 
 
 class TranscriptListFetcher:
-    def __init__(self, http_client: Session, proxy_config: Optional[ProxyConfig]):
+    def __init__(self, http_client: Session, proxy_config: Optional[ProxyConfig], path_file_save_list_fetcher_response: str = None):
         self._http_client = http_client
         self._proxy_config = proxy_config
+        self._path_file_save_list_fetcher_response = path_file_save_list_fetcher_response
 
     def fetch(self, video_id: str) -> TranscriptList:
         return TranscriptList.build(
@@ -441,8 +442,8 @@ class TranscriptListFetcher:
     def _fetch_html(self, video_id: str) -> str:
         response = self._http_client.get(WATCH_URL.format(video_id=video_id))
 
-        if 'PATH_SAVE_TRANSCRIPT_RESPONSE' in os.environ and os.environ['PATH_SAVE_TRANSCRIPT_RESPONSE']:
-            with open(os.path.join(os.environ['PATH_SAVE_TRANSCRIPT_RESPONSE'],video_id+".html"), "w", encoding="utf-8") as f:
+        if self._path_file_save_list_fetcher_response:
+            with open(self._path_file_save_list_fetcher_response, "w", encoding="utf-8") as f:
                 f.write(response.text)
 
         return unescape(_raise_http_errors(response, video_id).text)
