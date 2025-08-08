@@ -345,7 +345,7 @@ class TranscriptList:
 
 
 class TranscriptListFetcher:
-    def __init__(self, http_client: Session, proxy_config: Optional[ProxyConfig], path_file_save_list_fetcher_response: str = None):
+    def __init__(self, http_client: Session, proxy_config: Optional[ProxyConfig], path_file_save_list_fetcher_response: Optional[str]):
         self._http_client = http_client
         self._proxy_config = proxy_config
         self._path_file_save_list_fetcher_response = path_file_save_list_fetcher_response
